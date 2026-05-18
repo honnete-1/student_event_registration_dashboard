@@ -30,4 +30,38 @@
     </div>
   </nav>
 
-  
+  <!-- Main Container -->
+  <main class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+    <!-- Hero Section -->
+    <section class="mb-8 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#FFFFFF]/95 via-[#F0F4F8] to-[#DFF8FF] p-8 text-center text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] md:p-12">
+      <p class="mb-3 inline-block rounded-full bg-[#008DDA]/10 px-4 py-2 text-sm font-semibold text-[#008DDA]">Winter Chill Edition</p>
+      <h2 class="mx-auto max-w-3xl text-3xl font-extrabold leading-tight md:text-5xl">
+        Register, track, and manage school events with a clean frozen dashboard.
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-base text-slate-600 md:text-lg">
+        View available events, register students, cancel registrations, add new events, and keep everything saved even after refreshing the page.
+      </p>
+    </section>
+
+    <!-- Alert Message -->
+    <div id="messageBox" class="mb-6 hidden rounded-2xl border border-white/20 px-4 py-3 text-sm font-medium shadow-[0_8px_30px_rgb(65,201,226,0.1)]"></div>
+
+    <!-- Statistics Section -->
+    <section class="mb-8 grid gap-4 md:grid-cols-3">
+      <article class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]">
+        <p class="text-sm font-semibold text-slate-500">Total Events</p>
+        <h3 id="totalEvents" class="mt-2 text-4xl font-extrabold text-[#008DDA]">0</h3>
+      </article>
+
+      <article class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]">
+        <p class="text-sm font-semibold text-slate-500">Registered Students</p>
+        <h3 id="totalRegistered" class="mt-2 text-4xl font-extrabold text-[#059669]">0</h3>
+      </article>
+
+      <article class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]">
+        <p class="text-sm font-semibold text-slate-500">Remaining Seats</p>
+        <h3 id="remainingSeats" class="mt-2 text-4xl font-extrabold text-[#41C9E2]">0</h3>
+      </article>
+    </section>
+
+   
