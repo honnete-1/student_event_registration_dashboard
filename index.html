@@ -142,4 +142,243 @@
     Built with HTML5, Tailwind CSS, Vanilla JavaScript, DOM Manipulation, Arrays, Objects, and Local Storage.
   </footer>
 
-  
+  <script>
+    // Default event data used when localStorage has no saved events yet
+    const defaultEvents = [
+      { id: 1, title: "AI Bootcamp", category: "Technology", seats: 30, registered: 12 },
+      { id: 2, title: "Student Leadership Forum", category: "Leadership", seats: 40, registered: 21 },
+      { id: 3, title: "Career Readiness Workshop", category: "Career", seats: 25, registered: 10 },
+      { id: 4, title: "Inter-Class Football Day", category: "Sports", seats: 50, registered: 39 },
+      { id: 5, title: "Cultural Talent Night", category: "Culture", seats: 60, registered: 44 },
+      { id: 6, title: "Research Skills Session", category: "Academic", seats: 35, registered: 16 }
+    ];
+
+    let events = JSON.parse(localStorage.getItem("winterChillEvents")) || defaultEvents;
+    let searchTerm = "";
+
+    const eventsContainer = document.getElementById("eventsContainer");
+    const totalEventsElement = document.getElementById("totalEvents");
+    const totalRegisteredElement = document.getElementById("totalRegistered");
+    const remainingSeatsElement = document.getElementById("remainingSeats");
+    const eventForm = document.getElementById("eventForm");
+    const eventTitleInput = document.getElementById("eventTitle");
+    const eventCategoryInput = document.getElementById("eventCategory");
+    const eventSeatsInput = document.getElementById("eventSeats");
+    const searchInput = document.getElementById("searchInput");
+    const messageBox = document.getElementById("messageBox");
+    const eventCountLabel = document.getElementById("eventCountLabel");
+
+    function saveEvents() {
+      localStorage.setItem("winterChillEvents", JSON.stringify(events));
+    }
+
+    function showMessage(message, type = "success") {
+      messageBox.textContent = message;
+      messageBox.className = "mb-6 rounded-2xl border border-white/20 px-4 py-3 text-sm font-medium shadow-[0_8px_30px_rgb(65,201,226,0.1)]";
+
+      if (type === "error") {
+        messageBox.classList.add("bg-[#EF4444]", "text-white");
+      } else {
+        messageBox.classList.add("bg-[#10B981]", "text-white");
+      }
+
+      setTimeout(() => {
+        messageBox.classList.add("hidden");
+      }, 3000);
+    }
+
+    function updateStatistics() {
+      const totalEvents = events.length;
+      const totalRegistered = events.reduce((sum, event) => sum + event.registered, 0);
+      const remainingSeats = events.reduce((sum, event) => sum + (event.seats - event.registered), 0);
+
+      totalEventsElement.textContent = totalEvents;
+      totalRegisteredElement.textContent = totalRegistered;
+      remainingSeatsElement.textContent = remainingSeats;
+    }
+
+    function getFilteredEvents() {
+      return events.filter(event => {
+        const titleMatch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const categoryMatch = event.category.toLowerCase().includes(searchTerm.toLowerCase());
+        return titleMatch || categoryMatch;
+      });
+    }
+
+    function renderEvents() {
+      eventsContainer.innerHTML = "";
+
+      const filteredEvents = getFilteredEvents();
+      eventCountLabel.textContent = `Showing ${filteredEvents.length} event${filteredEvents.length === 1 ? "" : "s"}`;
+
+      if (filteredEvents.length === 0) {
+        eventsContainer.innerHTML = `
+          <div class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] sm:col-span-2 lg:col-span-3">
+            <h3 class="text-xl font-bold">No events found</h3>
+            <p class="mt-2 text-slate-500">Try searching with another event title or category.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // map() is used to generate cards from the events array
+      filteredEvents.map(event => {
+        const remainingSeats = event.seats - event.registered;
+        const isFull = remainingSeats === 0;
+        const progressPercentage = Math.round((event.registered / event.seats) * 100);
+
+        const card = document.createElement("article");
+        card.className = "rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]";
+
+        card.innerHTML = `
+          <div class="mb-4 flex items-start justify-between gap-4">
+            <div>
+              <span class="rounded-full bg-[#008DDA]/10 px-3 py-1 text-xs font-bold text-[#008DDA]">${event.category}</span>
+              <h3 class="mt-3 text-xl font-extrabold">${event.title}</h3>
+            </div>
+            <span class="rounded-full px-3 py-1 text-xs font-bold text-white ${isFull ? "bg-[#EF4444]" : "bg-[#10B981]"}">
+              ${isFull ? "Full" : "Open"}
+            </span>
+          </div>
+
+          <div class="mb-4 space-y-3">
+            <div class="flex justify-between text-sm">
+              <span class="text-slate-500">Total Seats</span>
+              <strong>${event.seats}</strong>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-slate-500">Registered</span>
+              <strong>${event.registered}</strong>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-slate-500">Remaining</span>
+              <strong class="${isFull ? "text-[#EF4444]" : "text-[#059669]"}">${remainingSeats}</strong>
+            </div>
+          </div>
+
+          <div class="mb-5 h-3 overflow-hidden rounded-full bg-slate-200">
+            <div class="h-full rounded-full ${isFull ? "bg-[#EF4444]" : "bg-[#008DDA]"}" style="width: ${progressPercentage}%"></div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              class="register-btn rounded-2xl bg-[#008DDA] px-4 py-3 text-sm font-bold text-white transition hover:scale-[1.01] hover:bg-[#41C9E2] disabled:cursor-not-allowed disabled:bg-slate-400"
+              data-id="${event.id}"
+              ${isFull ? "disabled" : ""}
+            >
+              Register
+            </button>
+            <button
+              class="cancel-btn rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 text-sm font-bold text-[#1E293B] transition hover:scale-[1.01] hover:bg-[#E2E8F0] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
+              data-id="${event.id}"
+              ${event.registered === 0 ? "disabled" : ""}
+            >
+              Cancel
+            </button>
+          </div>
+        `;
+
+        eventsContainer.appendChild(card);
+      });
+
+      attachButtonEvents();
+    }
+
+    function attachButtonEvents() {
+      document.querySelectorAll(".register-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          const eventId = Number(button.dataset.id);
+          registerForEvent(eventId);
+        });
+      });
+
+      document.querySelectorAll(".cancel-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          const eventId = Number(button.dataset.id);
+          cancelRegistration(eventId);
+        });
+      });
+    }
+
+    function registerForEvent(eventId) {
+      const event = events.find(item => item.id === eventId);
+
+      if (!event) return;
+
+      if (event.registered >= event.seats) {
+        showMessage("This event is already full.", "error");
+        return;
+      }
+
+      event.registered++;
+      saveEvents();
+      updateStatistics();
+      renderEvents();
+      showMessage("Registration successful.");
+    }
+
+    function cancelRegistration(eventId) {
+      const event = events.find(item => item.id === eventId);
+
+      if (!event) return;
+
+      if (event.registered <= 0) {
+        showMessage("No registration available to cancel.", "error");
+        return;
+      }
+
+      event.registered--;
+      saveEvents();
+      updateStatistics();
+      renderEvents();
+      showMessage("Registration cancelled successfully.");
+    }
+
+    eventForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const title = eventTitleInput.value.trim();
+      const category = eventCategoryInput.value.trim();
+      const seats = Number(eventSeatsInput.value);
+
+      if (title === "") {
+        showMessage("Please enter the event title.", "error");
+        return;
+      }
+
+      if (category === "") {
+        showMessage("Please select the event category.", "error");
+        return;
+      }
+
+      if (!seats || seats <= 0) {
+        showMessage("Please enter a valid number of seats.", "error");
+        return;
+      }
+
+      const newEvent = {
+        id: Date.now(),
+        title: title,
+        category: category,
+        seats: seats,
+        registered: 0
+      };
+
+      events.push(newEvent);
+      saveEvents();
+      updateStatistics();
+      renderEvents();
+      eventForm.reset();
+      showMessage("New event added successfully.");
+    });
+
+    searchInput.addEventListener("input", event => {
+      searchTerm = event.target.value;
+      renderEvents();
+    });
+
+    updateStatistics();
+    renderEvents();
+  </script>
+</body>
+</html>
