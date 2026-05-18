@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Event Registration Dashboard</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#0B192C] text-white">
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-50 border-b border-white/20 bg-[#0B192C]/90 backdrop-blur-md shadow-[0_8px_30px_rgb(65,201,226,0.1)]">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+      <div>
+        <h1 class="text-2xl font-bold text-[#41C9E2]">FrostEvents</h1>
+        <p class="text-sm text-slate-300">Student Event Registration Dashboard</p>
+      </div>
+
+      <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+        <a href="#events" class="rounded-xl px-4 py-2 text-sm font-medium text-slate-200 transition hover:scale-[1.01] hover:bg-[#E2E8F0] hover:text-[#1E293B]">Events</a>
+        <a href="#add-event" class="rounded-xl px-4 py-2 text-sm font-medium text-slate-200 transition hover:scale-[1.01] hover:bg-[#E2E8F0] hover:text-[#1E293B]">Add Event</a>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search events..."
+          class="w-full rounded-2xl border border-[#CBD5E1] bg-[#FFFFFF]/90 px-4 py-2 text-[#1E293B] outline-none transition focus:ring-2 focus:ring-[#41C9E2] sm:w-64"
+        />
+      </div>
+    </div>
+  </nav>
+
+  
