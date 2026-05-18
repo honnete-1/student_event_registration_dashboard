@@ -64,4 +64,73 @@
       </article>
     </section>
 
-   
+    <!-- Add Event Form -->
+    <section id="add-event" class="mb-10 rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)]">
+      <div class="mb-5">
+        <h2 class="text-2xl font-bold">Add New Event</h2>
+        <p class="text-sm text-slate-500">Create a new school event and make it available immediately.</p>
+      </div>
+
+      <form id="eventForm" class="grid gap-4 md:grid-cols-4">
+        <div class="md:col-span-1">
+          <label for="eventTitle" class="mb-2 block text-sm font-semibold">Event Title</label>
+          <input
+            id="eventTitle"
+            type="text"
+            placeholder="Example: AI Bootcamp"
+            class="w-full rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 outline-none transition focus:ring-2 focus:ring-[#41C9E2]"
+          />
+        </div>
+
+        <div class="md:col-span-1">
+          <label for="eventCategory" class="mb-2 block text-sm font-semibold">Category</label>
+          <select
+            id="eventCategory"
+            class="w-full rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 outline-none transition focus:ring-2 focus:ring-[#41C9E2]"
+          >
+            <option value="">Select category</option>
+            <option value="Technology">Technology</option>
+            <option value="Leadership">Leadership</option>
+            <option value="Sports">Sports</option>
+            <option value="Career">Career</option>
+            <option value="Culture">Culture</option>
+            <option value="Academic">Academic</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-1">
+          <label for="eventSeats" class="mb-2 block text-sm font-semibold">Total Seats</label>
+          <input
+            id="eventSeats"
+            type="number"
+            min="1"
+            placeholder="Example: 30"
+            class="w-full rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 outline-none transition focus:ring-2 focus:ring-[#41C9E2]"
+          />
+        </div>
+
+        <div class="flex items-end md:col-span-1">
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-[#008DDA] px-5 py-3 font-bold text-white shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#41C9E2]"
+          >
+            Add Event
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Event Display Area -->
+    <section id="events">
+      <div class="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 class="text-2xl font-bold text-white">Available Events</h2>
+          <p class="text-sm text-slate-300">Register or cancel student participation in real time.</p>
+        </div>
+        <p id="eventCountLabel" class="text-sm font-medium text-[#41C9E2]">Showing 0 events</p>
+      </div>
+
+      <div id="eventsContainer" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+  </main>
+
