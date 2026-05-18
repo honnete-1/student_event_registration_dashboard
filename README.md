@@ -1,343 +1,230 @@
-# FrostEvents – Student Event Registration Dashboard
+# CampusPulse — Student Event Registration Dashboard
 
-Tech Stack
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 ![Local Storage](https://img.shields.io/badge/Local_Storage-4A90E2?style=flat&logo=databricks&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-000000?style=flat&logo=vercel&logoColor=white)
 
-A responsive and interactive Student Event Registration Dashboard built using HTML5, Tailwind CSS, and Vanilla JavaScript.
+A responsive, fully interactive Student Event Registration Dashboard built with HTML5, Tailwind CSS v3, and Vanilla JavaScript — featuring a custom **Winter Chill** UI theme.
 
-LIVE DEMO: https://student-event-registration-dashboar-lime.vercel.app/
+🔗 **Live Demo:** https://student-event-registration-dashboar-lime.vercel.app/
 
-This project was developed as part of a Frontend Web Development assignment focused on:
+---
 
-- HTML5 structure
+## About the Project
+
+This project was developed as a Frontend Web Development assignment simulating a real-world event management system used in schools, conferences, and training programs. It allows users to view, register for, and manage campus events — with all data persisted across page refreshes using browser Local Storage.
+
+**Assignment Topics Covered:**
+- HTML5 semantic structure
 - Tailwind CSS responsive design
 - JavaScript Arrays & Objects
 - DOM Manipulation
 - Local Storage
-- Git and GitHub deployment
-
-The application simulates a real-world school or conference event registration system where users can:
-
-- View available events
-- Register students
-- Cancel registrations
-- Add new events dynamically
-- Search events instantly
-- Persist data using Local Storage
+- Git & Deployment
 
 ---
 
-# Features
+## Features
 
-## Responsive User Interface
+### Winter Chill UI Theme
+A premium custom design system built with Tailwind CSS utility classes:
 
-The dashboard is fully responsive and optimized for:
+| Token | Value | Usage |
+|---|---|---|
+| Deep Frost Navy | `#0B192C` | Global background |
+| Frosted Card White | `#F0F4F8` | Cards & containers |
+| Glacial Cyan | `#008DDA` / `#41C9E2` | Accents & primary controls |
+| Arctic Mint | `#10B981` | Success states |
+| Frozen Crimson | `#EF4444` | Full / error states |
 
-- Mobile phones
-- Tablets
-- Desktop devices
-
----
-
-## Winter Chill UI Theme
-
-The project uses a custom “Winter Chill” design system featuring:
-
-- Deep Frost Navy background
-- Frosted glass cards
-- Glacial Cyan accents
-- Arctic Mint success indicators
-- Smooth hover transitions
-- Rounded containers
-- Soft ambient shadows
+Visual highlights include frosted glass borders (`border border-white/20`), icy ambient shadows, smooth hover scale transitions, and staggered card entry animations.
 
 ---
 
-# Core Functionalities
-
-## Navbar
-
-- Responsive navigation
-- Search input
-- System branding
+### Responsive Layout
+Fully optimized for mobile phones, tablets, and desktops. The main content area uses a CSS Grid that splits into a sticky form column and a 2-column event card grid on desktop, collapsing to a single stack on mobile.
 
 ---
 
-## Hero Section
-
-- Dashboard introduction
-- Modern responsive layout
-- Gradient styling
-
----
-
-## Statistics Dashboard
-
-Dynamic statistics showing:
-
-- Total Events
-- Registered Students
-- Remaining Seats
-
-Statistics update automatically whenever users:
-
-- Register
-- Cancel
-- Add new events
+### Sticky Navbar
+- Brand logo and title (**CampusPulse**)
+- Real-time search input with live event filtering
+- Glassmorphism styling (`backdrop-blur-md`)
 
 ---
 
-## Event Management
-
-Each event card displays:
-
-- Event Title
-- Category
-- Total Seats
-- Registered Students
-- Remaining Seats
-- Registration Status
-
-Users can:
-
-- Register for events
-- Cancel registrations
-
-The system prevents:
-
-- Over-registration
-- Negative cancellations
+### Hero Section
+- Gradient headline: *"Master Your Campus Experience"*
+- Ambient background orbs for depth
+- Descriptive subtext
 
 ---
 
-## Add Event Form
+### Statistics Dashboard
+Three KPI cards that update automatically on every user action:
 
-Users can dynamically create new events by providing:
-
-- Event Title
-- Event Category
-- Number of Seats
-
-Validation prevents:
-
-- Empty event names
-- Empty categories
-- Invalid seat numbers
-
----
-
-## Search Functionality
-
-The dashboard includes real-time event searching using:
-
-- Event title matching
-- Category matching
-
-Filtering updates instantly while typing.
-
----
-
-## Local Storage Persistence
-
-All event data is saved using browser Local Storage.
-
-Data persists even after:
-
-- Page refresh
-- Browser restart
-
-Stored information includes:
-
-- Event titles
-- Categories
-- Seat counts
-- Registration counts
-
----
-
-# Technologies Used
-
-| Technology | Purpose |
+| Stat | Description |
 |---|---|
-| HTML5 | Page structure |
-| Tailwind CSS | Styling and responsiveness |
-| JavaScript | Interactivity and logic |
-| DOM Manipulation | Dynamic UI updates |
-| Local Storage | Data persistence |
-| Git and GitHub | Version control |
-| Vercel/GitHub Pages | Deployment |
+| Total Events | Count of all events in the system |
+| Total Registered | Sum of all registered students across events |
+| Available Seats | Sum of remaining seats across all events |
+
+Calculated using `.reduce()` and animated with a CSS pop effect on change.
 
 ---
 
-# Project Structure
+### Event Cards
+Each card displays:
+- Event title and colour-coded **category pill**
+- Registered / total seat counter
+- Animated **seat capacity progress bar** (green → orange → red as seats fill)
+- Remaining seats badge — turns red when seats are low or full
+- **Register** button — disabled and labelled *"Full"* when no seats remain
+- **Cancel** button — disabled when no registrations exist
 
-```text
-student-event-registration-dashboard/
+---
+
+### Add Event Form
+- Event Title, Category (dropdown), and Seats inputs
+- Inline validation with a styled error banner (auto-dismisses after 4s)
+- Success confirmation banner on valid submission
+- Form auto-resets after adding an event
+
+**Validation rules:**
+- Title cannot be empty
+- Category must be selected
+- Seats must be a whole number greater than zero
+
+---
+
+### Search Functionality
+Live search filters events by title or category as the user types, using `.filter()` and `.toLowerCase().includes()`. An empty state illustration appears when no results match.
+
+---
+
+### Local Storage Persistence
+All event data is saved to `localStorage` on every state change (add, register, cancel). Data is loaded on page init via `JSON.parse`, so events survive page refreshes and browser restarts.
+
+---
+
+## Project Structure
+
+```
+campuspulse/
 │
-├── index.html
-├── script.js
-├── README.md
-└── .gitattributes
+├── index.html        # Full semantic layout, Tailwind config, CDN links
+├── styles.css        # Tailwind directives + card animations + category pills
+├── app.js            # All JavaScript logic (state, DOM, events, storage)
+└── README.md
 ```
 
 ---
 
-# JavaScript Concepts Used
+## JavaScript Concepts
 
-This project demonstrates practical usage of:
-
-## Arrays and Objects
-
+### Data Model
 ```javascript
-const event = {
-  id: 1,
-  title: "AI Bootcamp",
+{
+  id: 1700000001,       // Date.now() timestamp — unique identifier
+  title: "AI Bootcamp 2025",
   category: "Technology",
   seats: 30,
   registered: 12
-};
+}
+```
+
+### Array Methods Used
+
+| Method | Where Applied |
+|---|---|
+| `.push()` | Appends a new event object to the events array on form submit |
+| `.find()` | Locates the correct event by ID when Register or Cancel is clicked |
+| `.filter()` | Narrows the visible events list based on the search query |
+| `.map()` | Converts each event object into a card DOM node inside `render()` |
+| `.forEach()` | Iterates the mapped nodes and appends them to the document fragment |
+| `.reduce()` | Calculates total registered students and total available seats for KPIs |
+
+### DOM Methods Used
+`getElementById` · `querySelector` · `createElement` · `createDocumentFragment` · `appendChild` · `innerHTML` · `addEventListener` · `closest` · `dataset`
+
+### Local Storage
+```javascript
+// Save
+localStorage.setItem("campuspulse_events", JSON.stringify(events));
+
+// Load
+const events = JSON.parse(localStorage.getItem("campuspulse_events"));
 ```
 
 ---
 
-## Array Methods
+## How to Run Locally
 
-| Method | Purpose |
-|---|---|
-| push() | Add new events |
-| find() | Locate event by ID |
-| filter() | Search functionality |
-| map() | Render event cards |
-| reduce() | Calculate statistics |
-
----
-
-## DOM Manipulation
-
-The project uses:
-
-- getElementById()
-- querySelector()
-- createElement()
-- appendChild()
-- innerHTML
-- addEventListener()
-
----
-
-# How to Run the Project
-
-## Option 1 – Open Locally
-
-1. Clone the repository:
-
+**Option 1 — Direct open**
 ```bash
 git clone <repository-link>
+cd campuspulse
+# Open index.html in any browser
 ```
 
-2. Open the project folder:
+**Option 2 — VS Code Live Server**
+1. Install the *Live Server* extension
+2. Right-click `index.html` → **Open with Live Server**
+
+> No build step required. Tailwind CSS is loaded via CDN.
+
+---
+
+## Deployment
+
+The project is deployed on **Vercel**. It can also be deployed on **GitHub Pages**:
+
+1. Push to a public GitHub repository
+2. Go to **Settings → Pages**
+3. Set source to `Deploy from branch → main`
+4. Copy the generated live URL
+
+---
+
+## Git Commit Timeline
 
 ```bash
-cd student-event-registration-dashboard
-```
-
-3. Open `index.html` in your browser.
-
----
-
-## Option 2 – VS Code Live Server
-
-1. Install the Live Server extension.
-2. Right-click `index.html`
-3. Click:
-
-```text
-Open with Live Server
+git commit -m "init: scaffold project structure with index.html, styles.css, app.js"
+git commit -m "feat(ui): build sticky glassmorphism navbar with brand logo and search input"
+git commit -m "feat(ui): add hero section with gradient headline and ambient frost orb background"
+git commit -m "feat(ui): implement 3-column statistics KPI section with icon badges"
+git commit -m "feat(ui): design responsive event card grid and sticky add-event form layout"
+git commit -m "feat(js): define events array/objects structure and seed data with 6 default events"
+git commit -m "feat(js): implement render() with .filter(), .map(), .forEach() and DOM manipulation"
+git commit -m "feat(js): add register/cancel button logic using .find() and event delegation"
+git commit -m "feat(js): integrate localStorage with JSON.stringify/parse for full data persistence"
+git commit -m "polish: add form validation, error/success banners, empty state, and responsive tweaks"
 ```
 
 ---
 
-# Deployment
+## Future Improvements
 
-The project can be deployed using:
-
-- GitHub Pages
-- Vercel
-
----
-
-# Git Commit Timeline
-
-Example professional commit flow:
-
-```bash
-Initialize project structure
-Build responsive navbar and hero section
-Create statistics dashboard
-Design event cards and forms
-Implement DOM rendering
-Add register and cancel functionality
-Implement form validation
-Add Local Storage persistence
-Improve responsive UI and polish design
-Deploy project to Vercel
-```
-
----
-
-# UI Design Highlights
-
-- Frosted glass containers
-- Dynamic event cards
-- Animated hover effects
-- Responsive grid layout
-- Modern dashboard statistics
-- Clean typography
-- Winter-inspired aesthetic
-
----
-
-# Validation Rules
-
-The system prevents:
-
-- Empty submissions
-- Invalid seat numbers
-- Over-registration
-- Negative registration counts
-
----
-
-# Future Improvements
-
-Potential future enhancements include:
-
+- Event editing and deletion
+- Admin vs. student role separation
+- Backend integration with a REST API
+- Database storage (replacing Local Storage)
 - Authentication system
-- Admin dashboard
-- Event editing
-- Event deletion
-- Dark/Light mode toggle
-- Backend integration
-- API support
-- Database storage
-- Attendance tracking
+- Attendance tracking and export
+- Dark / Light mode toggle
+- Event date and time fields
 
 ---
 
-# Author
+## Author
 
-Developed by:
-
-Honore Peter Joy Ndayishimiye
-
-Frontend Web Development Assignment Project
+**Honnete Nishimwe**
+Frontend Web Development — Assignment Project
 
 ---
 
-# License
+## License
 
 This project is for educational and learning purposes.
