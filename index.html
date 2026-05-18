@@ -3,382 +3,377 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Event Registration Dashboard</title>
+  <title>CampusPulse — Student Event Dashboard</title>
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS v3 CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen bg-[#0B192C] text-white">
-  <!-- Navbar -->
-  <nav class="sticky top-0 z-50 border-b border-white/20 bg-[#0B192C]/90 backdrop-blur-md shadow-[0_8px_30px_rgb(65,201,226,0.1)]">
-    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-      <div>
-        <h1 class="text-2xl font-bold text-[#41C9E2]">FrostEvents</h1>
-        <p class="text-sm text-slate-300">Student Event Registration Dashboard</p>
-      </div>
 
-      <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-        <a href="#events" class="rounded-xl px-4 py-2 text-sm font-medium text-slate-200 transition hover:scale-[1.01] hover:bg-[#E2E8F0] hover:text-[#1E293B]">Events</a>
-        <a href="#add-event" class="rounded-xl px-4 py-2 text-sm font-medium text-slate-200 transition hover:scale-[1.01] hover:bg-[#E2E8F0] hover:text-[#1E293B]">Add Event</a>
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Search events..."
-          class="w-full rounded-2xl border border-[#CBD5E1] bg-[#FFFFFF]/90 px-4 py-2 text-[#1E293B] outline-none transition focus:ring-2 focus:ring-[#41C9E2] sm:w-64"
-        />
+  <!-- Google Fonts: Syne (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind Config + Custom Styles -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            frost: {
+              navy:    '#0B192C',
+              card:    '#F0F4F8',
+              white:   '#FFFFFF',
+              cyan:    '#008DDA',
+              cyanlt:  '#41C9E2',
+              mint:    '#10B981',
+              mintdk:  '#059669',
+              crimson: '#EF4444',
+              slate:   '#1E293B',
+              border:  '#CBD5E1',
+              muted:   '#64748B',
+              hover:   '#E2E8F0',
+            }
+          },
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+          boxShadow: {
+            icy:     '0 8px 30px rgb(65,201,226,0.12)',
+            'icy-lg':'0 16px 48px rgb(65,201,226,0.18)',
+            glow:    '0 0 24px rgb(0,141,218,0.35)',
+          },
+          backdropBlur: { xs: '4px' }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-frost-navy font-body min-h-screen antialiased">
+
+  <!-- ═══════════════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════════════ -->
+  <nav id="navbar"
+       class="sticky top-0 z-50 w-full
+              backdrop-blur-md bg-[#0B192C]/80
+              border-b border-white/10
+              shadow-[0_2px_24px_rgb(65,201,226,0.08)]
+              transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+
+        <!-- Brand -->
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-frost-cyan to-frost-cyanlt
+                      flex items-center justify-center shadow-glow">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838l-2.727 1.17 1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
+              <path d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zm5.99 7.176A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+            </svg>
+          </div>
+          <span class="font-display text-xl text-white tracking-tight">
+            Campus<span class="text-frost-cyanlt">Pulse</span>
+          </span>
+        </div>
+
+        <!-- Search -->
+        <div class="flex-1 max-w-sm relative">
+          <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <svg class="w-4 h-4 text-frost-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </div>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search events…"
+            class="w-full pl-9 pr-4 py-2 rounded-xl
+                   bg-white/10 border border-white/15 text-white placeholder-frost-muted
+                   text-sm focus:outline-none focus:ring-2 focus:ring-frost-cyanlt
+                   transition-all duration-200"
+          />
+        </div>
+
+        <!-- Badge -->
+        <div class="hidden sm:flex items-center gap-2 shrink-0">
+          <span class="text-xs font-medium text-frost-cyanlt
+                       bg-frost-cyanlt/10 border border-frost-cyanlt/30
+                       px-3 py-1 rounded-full">
+            Admin Panel
+          </span>
+        </div>
+
       </div>
     </div>
   </nav>
 
-  <!-- Main Container -->
-  <main class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-    <!-- Hero Section -->
-    <section class="mb-8 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#FFFFFF]/95 via-[#F0F4F8] to-[#DFF8FF] p-8 text-center text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] md:p-12">
-      <p class="mb-3 inline-block rounded-full bg-[#008DDA]/10 px-4 py-2 text-sm font-semibold text-[#008DDA]">Winter Chill Edition</p>
-      <h2 class="mx-auto max-w-3xl text-3xl font-extrabold leading-tight md:text-5xl">
-        Register, track, and manage school events with a clean frozen dashboard.
-      </h2>
-      <p class="mx-auto mt-4 max-w-2xl text-base text-slate-600 md:text-lg">
-        View available events, register students, cancel registrations, add new events, and keep everything saved even after refreshing the page.
+  <!-- ═══════════════════════════════════════════════
+       HERO SECTION
+  ═══════════════════════════════════════════════ -->
+  <section class="relative overflow-hidden px-4 pt-16 pb-12 text-center">
+
+    <!-- Ambient background orbs -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 rounded-full
+                bg-frost-cyan/10 blur-[120px] pointer-events-none -translate-y-1/2"></div>
+    <div class="absolute top-0 right-1/4 w-72 h-72 rounded-full
+                bg-frost-cyanlt/8 blur-[100px] pointer-events-none -translate-y-1/3"></div>
+
+    <div class="relative max-w-3xl mx-auto">
+      <span class="inline-block text-xs font-semibold tracking-widest uppercase
+                   text-frost-cyanlt bg-frost-cyanlt/10 border border-frost-cyanlt/25
+                   px-4 py-1.5 rounded-full mb-6">
+        Student Event Management System
+      </span>
+
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.1] mb-5">
+        <span class="bg-gradient-to-r from-white via-frost-cyanlt to-frost-cyan
+                     bg-clip-text text-transparent">
+          Master Your
+        </span>
+        <br />
+        <span class="text-white">Campus Experience</span>
+      </h1>
+
+      <p class="text-frost-muted text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+        Register for workshops, seminars, and campus events. Track availability in real-time
+        and never miss what matters.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <!-- Alert Message -->
-    <div id="messageBox" class="mb-6 hidden rounded-2xl border border-white/20 px-4 py-3 text-sm font-medium shadow-[0_8px_30px_rgb(65,201,226,0.1)]"></div>
+  <!-- ═══════════════════════════════════════════════
+       STATISTICS SECTION
+  ═══════════════════════════════════════════════ -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-    <!-- Statistics Section -->
-    <section class="mb-8 grid gap-4 md:grid-cols-3">
-      <article class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]">
-        <p class="text-sm font-semibold text-slate-500">Total Events</p>
-        <h3 id="totalEvents" class="mt-2 text-4xl font-extrabold text-[#008DDA]">0</h3>
-      </article>
-
-      <article class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]">
-        <p class="text-sm font-semibold text-slate-500">Registered Students</p>
-        <h3 id="totalRegistered" class="mt-2 text-4xl font-extrabold text-[#059669]">0</h3>
-      </article>
-
-      <article class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]">
-        <p class="text-sm font-semibold text-slate-500">Remaining Seats</p>
-        <h3 id="remainingSeats" class="mt-2 text-4xl font-extrabold text-[#41C9E2]">0</h3>
-      </article>
-    </section>
-
-    <!-- Add Event Form -->
-    <section id="add-event" class="mb-10 rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)]">
-      <div class="mb-5">
-        <h2 class="text-2xl font-bold">Add New Event</h2>
-        <p class="text-sm text-slate-500">Create a new school event and make it available immediately.</p>
-      </div>
-
-      <form id="eventForm" class="grid gap-4 md:grid-cols-4">
-        <div class="md:col-span-1">
-          <label for="eventTitle" class="mb-2 block text-sm font-semibold">Event Title</label>
-          <input
-            id="eventTitle"
-            type="text"
-            placeholder="Example: AI Bootcamp"
-            class="w-full rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 outline-none transition focus:ring-2 focus:ring-[#41C9E2]"
-          />
+      <!-- Total Events -->
+      <div class="rounded-2xl bg-frost-card/90 border border-white/20
+                  shadow-icy p-6 flex items-center gap-4
+                  hover:scale-[1.01] hover:bg-frost-hover
+                  transition-all duration-200 cursor-default">
+        <div class="w-12 h-12 rounded-xl bg-frost-cyan/15 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-frost-cyan" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
         </div>
-
-        <div class="md:col-span-1">
-          <label for="eventCategory" class="mb-2 block text-sm font-semibold">Category</label>
-          <select
-            id="eventCategory"
-            class="w-full rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 outline-none transition focus:ring-2 focus:ring-[#41C9E2]"
-          >
-            <option value="">Select category</option>
-            <option value="Technology">Technology</option>
-            <option value="Leadership">Leadership</option>
-            <option value="Sports">Sports</option>
-            <option value="Career">Career</option>
-            <option value="Culture">Culture</option>
-            <option value="Academic">Academic</option>
-          </select>
-        </div>
-
-        <div class="md:col-span-1">
-          <label for="eventSeats" class="mb-2 block text-sm font-semibold">Total Seats</label>
-          <input
-            id="eventSeats"
-            type="number"
-            min="1"
-            placeholder="Example: 30"
-            class="w-full rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 outline-none transition focus:ring-2 focus:ring-[#41C9E2]"
-          />
-        </div>
-
-        <div class="flex items-end md:col-span-1">
-          <button
-            type="submit"
-            class="w-full rounded-2xl bg-[#008DDA] px-5 py-3 font-bold text-white shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#41C9E2]"
-          >
-            Add Event
-          </button>
-        </div>
-      </form>
-    </section>
-
-    <!-- Event Display Area -->
-    <section id="events">
-      <div class="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 class="text-2xl font-bold text-white">Available Events</h2>
-          <p class="text-sm text-slate-300">Register or cancel student participation in real time.</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-frost-muted mb-1">Total Events</p>
+          <p id="statTotalEvents" class="font-display text-3xl text-frost-slate">0</p>
         </div>
-        <p id="eventCountLabel" class="text-sm font-medium text-[#41C9E2]">Showing 0 events</p>
       </div>
 
-      <div id="eventsContainer" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
-    </section>
+      <!-- Total Registered -->
+      <div class="rounded-2xl bg-frost-card/90 border border-white/20
+                  shadow-icy p-6 flex items-center gap-4
+                  hover:scale-[1.01] hover:bg-frost-hover
+                  transition-all duration-200 cursor-default">
+        <div class="w-12 h-12 rounded-xl bg-frost-mint/15 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-frost-mint" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-frost-muted mb-1">Total Registered</p>
+          <p id="statTotalRegistered" class="font-display text-3xl text-frost-slate">0</p>
+        </div>
+      </div>
+
+      <!-- Available Seats -->
+      <div class="rounded-2xl bg-frost-card/90 border border-white/20
+                  shadow-icy p-6 flex items-center gap-4
+                  hover:scale-[1.01] hover:bg-frost-hover
+                  transition-all duration-200 cursor-default">
+        <div class="w-12 h-12 rounded-xl bg-frost-cyanlt/15 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-frost-cyanlt" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-frost-muted mb-1">Available Seats</p>
+          <p id="statAvailableSeats" class="font-display text-3xl text-frost-slate">0</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN CONTENT: FORM (left) + CARDS (right)
+  ═══════════════════════════════════════════════ -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-8 items-start">
+
+      <!-- ── LEFT: Sticky Add Event Form ── -->
+      <aside class="lg:sticky lg:top-24">
+        <div class="rounded-2xl bg-frost-card/90 border border-white/20
+                    shadow-icy p-6">
+
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-8 h-8 rounded-lg bg-frost-cyan/20 flex items-center justify-center">
+              <svg class="w-4 h-4 text-frost-cyan" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <h2 class="font-display text-lg text-frost-slate">Add New Event</h2>
+          </div>
+
+          <!-- Validation Error Banner -->
+          <div id="formError"
+               class="hidden mb-4 rounded-xl bg-frost-crimson/10 border border-frost-crimson/30
+                      text-frost-crimson text-sm px-4 py-3 flex items-center gap-2">
+            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 102 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+            </svg>
+            <span id="formErrorMsg">Please fill all fields correctly.</span>
+          </div>
+
+          <!-- Success Banner -->
+          <div id="formSuccess"
+               class="hidden mb-4 rounded-xl bg-frost-mint/10 border border-frost-mint/30
+                      text-frost-mintdk text-sm px-4 py-3 flex items-center gap-2">
+            <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span>Event added successfully!</span>
+          </div>
+
+          <form id="addEventForm" novalidate class="space-y-4">
+
+            <!-- Event Title -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-frost-muted mb-1.5">
+                Event Title
+              </label>
+              <input
+                id="inputTitle"
+                type="text"
+                placeholder="e.g. AI Bootcamp 2025"
+                class="w-full px-4 py-2.5 rounded-xl bg-white border border-frost-border text-frost-slate
+                       placeholder-frost-muted/60 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-frost-cyanlt focus:border-transparent
+                       transition-all duration-200"
+              />
+            </div>
+
+            <!-- Category -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-frost-muted mb-1.5">
+                Category
+              </label>
+              <select
+                id="inputCategory"
+                class="w-full px-4 py-2.5 rounded-xl bg-white border border-frost-border text-frost-slate
+                       text-sm focus:outline-none focus:ring-2 focus:ring-frost-cyanlt focus:border-transparent
+                       transition-all duration-200 cursor-pointer appearance-none"
+              >
+                <option value="">Select category…</option>
+                <option value="Technology">Technology</option>
+                <option value="Science">Science</option>
+                <option value="Arts">Arts</option>
+                <option value="Sports">Sports</option>
+                <option value="Business">Business</option>
+                <option value="Health">Health</option>
+                <option value="Music">Music</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- Number of Seats -->
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-frost-muted mb-1.5">
+                Number of Seats
+              </label>
+              <input
+                id="inputSeats"
+                type="number"
+                min="1"
+                placeholder="e.g. 30"
+                class="w-full px-4 py-2.5 rounded-xl bg-white border border-frost-border text-frost-slate
+                       placeholder-frost-muted/60 text-sm
+                       focus:outline-none focus:ring-2 focus:ring-frost-cyanlt focus:border-transparent
+                       transition-all duration-200"
+              />
+            </div>
+
+            <!-- Submit -->
+            <button
+              type="submit"
+              class="w-full py-3 rounded-xl font-semibold text-sm text-white
+                     bg-gradient-to-r from-frost-cyan to-frost-cyanlt
+                     hover:from-frost-cyanlt hover:to-frost-cyan
+                     shadow-glow hover:shadow-icy-lg
+                     active:scale-[0.98] transition-all duration-200
+                     flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Add Event
+            </button>
+
+          </form>
+        </div>
+      </aside>
+
+      <!-- ── RIGHT: Event Cards Grid ── -->
+      <section>
+        <!-- Section Header -->
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="font-display text-xl text-white">
+            All Events
+            <span id="eventsCountBadge"
+                  class="ml-2 text-xs font-body font-semibold
+                         bg-frost-cyanlt/20 text-frost-cyanlt
+                         border border-frost-cyanlt/30 px-2 py-0.5 rounded-full">
+              0
+            </span>
+          </h2>
+          <p class="text-xs text-frost-muted hidden sm:block">Real-time registration tracking</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState"
+             class="hidden col-span-full rounded-2xl bg-frost-card/60 border border-white/10
+                    py-16 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-frost-cyan/10 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-frost-cyan/60" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <p class="text-frost-muted text-sm">No events found. Try a different search or add a new event.</p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div id="eventsGrid"
+             class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <!-- Populated by app.js -->
+        </div>
+      </section>
+
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="mt-10 border-t border-white/20 py-6 text-center text-sm text-slate-300">
-    <p>
-        &copy; 2026 created by Honnete
-      </p>
-    Built with HTML5, Tailwind CSS, Vanilla JavaScript, DOM Manipulation, Arrays, Objects, and Local Storage.
+  <!-- ═══════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════ -->
+  <footer class="border-t border-white/10 py-6 text-center">
+    <p class="text-xs text-frost-muted">
+      CampusPulse &copy; 2025 — Student Event Registration Dashboard
+    </p>
   </footer>
 
-  <script>
-    // Default event data used when localStorage has no saved events yet
-    const defaultEvents = [
-      { id: 1, title: "AI Bootcamp", category: "Technology", seats: 30, registered: 12 },
-      { id: 2, title: "Student Leadership Forum", category: "Leadership", seats: 40, registered: 21 },
-      { id: 3, title: "Career Readiness Workshop", category: "Career", seats: 25, registered: 10 },
-      { id: 4, title: "Inter-Class Football Day", category: "Sports", seats: 50, registered: 39 },
-      { id: 5, title: "Cultural Talent Night", category: "Culture", seats: 60, registered: 44 },
-      { id: 6, title: "Research Skills Session", category: "Academic", seats: 35, registered: 16 }
-    ];
-
-    let events = JSON.parse(localStorage.getItem("winterChillEvents")) || defaultEvents;
-    let searchTerm = "";
-
-    const eventsContainer = document.getElementById("eventsContainer");
-    const totalEventsElement = document.getElementById("totalEvents");
-    const totalRegisteredElement = document.getElementById("totalRegistered");
-    const remainingSeatsElement = document.getElementById("remainingSeats");
-    const eventForm = document.getElementById("eventForm");
-    const eventTitleInput = document.getElementById("eventTitle");
-    const eventCategoryInput = document.getElementById("eventCategory");
-    const eventSeatsInput = document.getElementById("eventSeats");
-    const searchInput = document.getElementById("searchInput");
-    const messageBox = document.getElementById("messageBox");
-    const eventCountLabel = document.getElementById("eventCountLabel");
-
-    function saveEvents() {
-      localStorage.setItem("winterChillEvents", JSON.stringify(events));
-    }
-
-    function showMessage(message, type = "success") {
-      messageBox.textContent = message;
-      messageBox.className = "mb-6 rounded-2xl border border-white/20 px-4 py-3 text-sm font-medium shadow-[0_8px_30px_rgb(65,201,226,0.1)]";
-
-      if (type === "error") {
-        messageBox.classList.add("bg-[#EF4444]", "text-white");
-      } else {
-        messageBox.classList.add("bg-[#10B981]", "text-white");
-      }
-
-      setTimeout(() => {
-        messageBox.classList.add("hidden");
-      }, 3000);
-    }
-
-    function updateStatistics() {
-      const totalEvents = events.length;
-      const totalRegistered = events.reduce((sum, event) => sum + event.registered, 0);
-      const remainingSeats = events.reduce((sum, event) => sum + (event.seats - event.registered), 0);
-
-      totalEventsElement.textContent = totalEvents;
-      totalRegisteredElement.textContent = totalRegistered;
-      remainingSeatsElement.textContent = remainingSeats;
-    }
-
-    function getFilteredEvents() {
-      return events.filter(event => {
-        const titleMatch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const categoryMatch = event.category.toLowerCase().includes(searchTerm.toLowerCase());
-        return titleMatch || categoryMatch;
-      });
-    }
-
-    function renderEvents() {
-      eventsContainer.innerHTML = "";
-
-      const filteredEvents = getFilteredEvents();
-      eventCountLabel.textContent = `Showing ${filteredEvents.length} event${filteredEvents.length === 1 ? "" : "s"}`;
-
-      if (filteredEvents.length === 0) {
-        eventsContainer.innerHTML = `
-          <div class="rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] sm:col-span-2 lg:col-span-3">
-            <h3 class="text-xl font-bold">No events found</h3>
-            <p class="mt-2 text-slate-500">Try searching with another event title or category.</p>
-          </div>
-        `;
-        return;
-      }
-
-      // map() is used to generate cards from the events array
-      filteredEvents.map(event => {
-        const remainingSeats = event.seats - event.registered;
-        const isFull = remainingSeats === 0;
-        const progressPercentage = Math.round((event.registered / event.seats) * 100);
-
-        const card = document.createElement("article");
-        card.className = "rounded-2xl border border-white/20 bg-[#FFFFFF]/90 p-6 text-[#1E293B] shadow-[0_8px_30px_rgb(65,201,226,0.1)] transition hover:scale-[1.01] hover:bg-[#E2E8F0]";
-
-        card.innerHTML = `
-          <div class="mb-4 flex items-start justify-between gap-4">
-            <div>
-              <span class="rounded-full bg-[#008DDA]/10 px-3 py-1 text-xs font-bold text-[#008DDA]">${event.category}</span>
-              <h3 class="mt-3 text-xl font-extrabold">${event.title}</h3>
-            </div>
-            <span class="rounded-full px-3 py-1 text-xs font-bold text-white ${isFull ? "bg-[#EF4444]" : "bg-[#10B981]"}">
-              ${isFull ? "Full" : "Open"}
-            </span>
-          </div>
-
-          <div class="mb-4 space-y-3">
-            <div class="flex justify-between text-sm">
-              <span class="text-slate-500">Total Seats</span>
-              <strong>${event.seats}</strong>
-            </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-slate-500">Registered</span>
-              <strong>${event.registered}</strong>
-            </div>
-            <div class="flex justify-between text-sm">
-              <span class="text-slate-500">Remaining</span>
-              <strong class="${isFull ? "text-[#EF4444]" : "text-[#059669]"}">${remainingSeats}</strong>
-            </div>
-          </div>
-
-          <div class="mb-5 h-3 overflow-hidden rounded-full bg-slate-200">
-            <div class="h-full rounded-full ${isFull ? "bg-[#EF4444]" : "bg-[#008DDA]"}" style="width: ${progressPercentage}%"></div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <button
-              class="register-btn rounded-2xl bg-[#008DDA] px-4 py-3 text-sm font-bold text-white transition hover:scale-[1.01] hover:bg-[#41C9E2] disabled:cursor-not-allowed disabled:bg-slate-400"
-              data-id="${event.id}"
-              ${isFull ? "disabled" : ""}
-            >
-              Register
-            </button>
-            <button
-              class="cancel-btn rounded-2xl border border-[#CBD5E1] bg-white px-4 py-3 text-sm font-bold text-[#1E293B] transition hover:scale-[1.01] hover:bg-[#E2E8F0] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
-              data-id="${event.id}"
-              ${event.registered === 0 ? "disabled" : ""}
-            >
-              Cancel
-            </button>
-          </div>
-        `;
-
-        eventsContainer.appendChild(card);
-      });
-
-      attachButtonEvents();
-    }
-
-    function attachButtonEvents() {
-      document.querySelectorAll(".register-btn").forEach(button => {
-        button.addEventListener("click", () => {
-          const eventId = Number(button.dataset.id);
-          registerForEvent(eventId);
-        });
-      });
-
-      document.querySelectorAll(".cancel-btn").forEach(button => {
-        button.addEventListener("click", () => {
-          const eventId = Number(button.dataset.id);
-          cancelRegistration(eventId);
-        });
-      });
-    }
-
-    function registerForEvent(eventId) {
-      const event = events.find(item => item.id === eventId);
-
-      if (!event) return;
-
-      if (event.registered >= event.seats) {
-        showMessage("This event is already full.", "error");
-        return;
-      }
-
-      event.registered++;
-      saveEvents();
-      updateStatistics();
-      renderEvents();
-      showMessage("Registration successful.");
-    }
-
-    function cancelRegistration(eventId) {
-      const event = events.find(item => item.id === eventId);
-
-      if (!event) return;
-
-      if (event.registered <= 0) {
-        showMessage("No registration available to cancel.", "error");
-        return;
-      }
-
-      event.registered--;
-      saveEvents();
-      updateStatistics();
-      renderEvents();
-      showMessage("Registration cancelled successfully.");
-    }
-
-    eventForm.addEventListener("submit", event => {
-      event.preventDefault();
-
-      const title = eventTitleInput.value.trim();
-      const category = eventCategoryInput.value.trim();
-      const seats = Number(eventSeatsInput.value);
-
-      if (title === "") {
-        showMessage("Please enter the event title.", "error");
-        return;
-      }
-
-      if (category === "") {
-        showMessage("Please select the event category.", "error");
-        return;
-      }
-
-      if (!seats || seats <= 0) {
-        showMessage("Please enter a valid number of seats.", "error");
-        return;
-      }
-
-      const newEvent = {
-        id: Date.now(),
-        title: title,
-        category: category,
-        seats: seats,
-        registered: 0
-      };
-
-      events.push(newEvent);
-      saveEvents();
-      updateStatistics();
-      renderEvents();
-      eventForm.reset();
-      showMessage("New event added successfully.");
-    });
-
-    searchInput.addEventListener("input", event => {
-      searchTerm = event.target.value;
-      renderEvents();
-    });
-
-    updateStatistics();
-    renderEvents();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

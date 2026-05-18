@@ -1,0 +1,122 @@
+/*
+ * styles.css — CampusPulse: Winter Chill Theme
+ * Tailwind CSS base initialization + custom global overrides
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────
+   BASE RESETS & ROOT DEFAULTS
+───────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0B192C;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] { -moz-appearance: textfield; }
+
+/* ─────────────────────────────────────────────────
+   CARD ENTRY ANIMATION
+───────────────────────────────────────────────── */
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.event-card {
+  animation: card-enter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Stagger each card so they cascade in */
+.event-card:nth-child(1)  { animation-delay: 0.00s; }
+.event-card:nth-child(2)  { animation-delay: 0.06s; }
+.event-card:nth-child(3)  { animation-delay: 0.12s; }
+.event-card:nth-child(4)  { animation-delay: 0.18s; }
+.event-card:nth-child(5)  { animation-delay: 0.24s; }
+.event-card:nth-child(6)  { animation-delay: 0.30s; }
+.event-card:nth-child(7)  { animation-delay: 0.36s; }
+.event-card:nth-child(8)  { animation-delay: 0.42s; }
+
+/* ─────────────────────────────────────────────────
+   STAT COUNTER PULSE (visual refresh feedback)
+───────────────────────────────────────────────── */
+@keyframes stat-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.stat-pop {
+  animation: stat-pop 0.28s ease-out;
+}
+
+/* ─────────────────────────────────────────────────
+   SEAT PROGRESS BAR
+───────────────────────────────────────────────── */
+.seat-bar-fill {
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────────
+   CATEGORY PILL COLOURS
+───────────────────────────────────────────────── */
+.cat-Technology { background-color: #DBEAFE; color: #1D4ED8; }
+.cat-Science    { background-color: #EDE9FE; color: #6D28D9; }
+.cat-Arts       { background-color: #FCE7F3; color: #BE185D; }
+.cat-Sports     { background-color: #D1FAE5; color: #065F46; }
+.cat-Business   { background-color: #FEF3C7; color: #92400E; }
+.cat-Health     { background-color: #ECFDF5; color: #059669; }
+.cat-Music      { background-color: #FFF7ED; color: #C2410C; }
+.cat-Other      { background-color: #F1F5F9; color: #475569; }
+
+/* ─────────────────────────────────────────────────
+   SCROLLBAR (webkit) — subtle icy styling
+───────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(65, 201, 226, 0.25);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(65, 201, 226, 0.45);
+}
+
+/* ─────────────────────────────────────────────────
+   BUTTON DISABLED STATE
+───────────────────────────────────────────────── */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ─────────────────────────────────────────────────
+   GLASSMORPHISM NAVBAR (fallback for non-webkit)
+───────────────────────────────────────────────── */
+@supports not (backdrop-filter: blur(12px)) {
+  #navbar { background-color: rgba(11, 25, 44, 0.97); }
+}
